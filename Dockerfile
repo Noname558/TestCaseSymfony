@@ -38,6 +38,7 @@ COPY --from=php_extension_installer --link /usr/bin/install-php-extensions /usr/
 
 # persistent / runtime deps
 RUN apk add --no-cache \
+    	libsodium-dev \
 		acl \
 		fcgi \
 		file \
@@ -47,13 +48,21 @@ RUN apk add --no-cache \
 
 RUN set -eux; \
     install-php-extensions \
+      	http \
+    	sodium \
     	intl \
     	zip \
     	apcu \
 		opcache \
     ;
-
+RUN docker-php-ext-enable sodium;
 ###> recipes ###
+###> doctrine/doctrine-bundle ###
+RUN apk add --no-cache --virtual .pgsql-deps postgresql-dev; \
+	docker-php-ext-install -j$(nproc) pdo_pgsql; \
+	apk add --no-cache --virtual .pgsql-rundeps so:libpq.so.5; \
+	apk del .pgsql-deps
+###< doctrine/doctrine-bundle ###
 ###< recipes ###
 
 RUN mv "$PHP_INI_DIR/php.ini-production" "$PHP_INI_DIR/php.ini"
@@ -84,7 +93,7 @@ COPY --from=composer --link /composer /usr/bin/composer
 COPY --link composer.* symfony.* ./
 RUN set -eux; \
     if [ -f composer.json ]; then \
-		composer install --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress; \
+		composer install --prefer-dist --no-dev --no-autoloader --no-scripts --no-progress --ignore-platform-req=ext-libsodium; \
 		composer clear-cache; \
     fi
 

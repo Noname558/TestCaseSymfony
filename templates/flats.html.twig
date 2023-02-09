@@ -1,0 +1,28 @@
+{# templates/rent/flats.html.twig #}
+<h2> Список всех квартир </h2>
+<table>
+    <tr>
+        <td> Id </td>
+        <td>  Адрес </td>
+        <td> Этаж </td>
+        <td> Номер </td>
+        <td> Площадь </td>
+        <td> Стоимость </td>
+    </tr>
+        {% for property_title in product %}
+            <tr>
+            <td>{{ property_title.getId() }}
+                <td>{{ property_title.getAddress() }}</td>
+                <td>{{ property_title.getFloor() }}</td>
+                <td>{{ property_title.getNumber() }}</td>
+                <td>{{ property_title.getSquare() }}</td>
+                <td>{{ property_title.getPrice() }}</td>
+                <td>
+                    <a href="http://localhost/flat/{{ property_title.getId()}}"><button>Изменить квартиру</button></a>
+                </td>
+            </tr>
+        {% endfor %}
+
+</table>
+
+<a href="/"> Вернуться на главную </a>

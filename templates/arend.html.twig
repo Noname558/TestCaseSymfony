@@ -1,0 +1,35 @@
+{# templates/rent/arend.html.twig #}
+<h2> Подбор квартир </h2>
+
+{{ form(form_search_flat) }}
+<table>
+    <tr>
+        <td> Id </td>
+        <td>  Адрес </td>
+        <td> Этаж </td>
+        <td> Номер </td>
+        <td> Площадь </td>
+        <td> Стоимость </td>
+    </tr>
+    {% for property_title in available_flats %}
+        <tr>
+            <td>{{ property_title.getId() }}</td>
+            <td>{{ property_title.getAddress() }}</td>
+            <td>{{ property_title.getFloor() }}</td>
+            <td>{{ property_title.getNumber() }}</td>
+            <td>{{ property_title.getSquare() }}</td>
+            <td>{{ property_title.getPrice() }} </td>
+            <td>
+                <form method="POST" action="/create-arenda/">
+                    <input type="hidden" name="flat_id" value="{{ property_title.getId() }}" >
+                    <input type="hidden" name="people_id" value="{{ submit_data.people_id }}" >
+                    <input type="hidden" name="start" value="{{ submit_data.start }}" >
+                    <input type="hidden" name="finish" value="{{ submit_data.finish }}" >
+                    <button type="submit"> Арендовать </button>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+<a href="/"> Вернуться на главную </a>

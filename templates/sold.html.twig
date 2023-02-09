@@ -1,0 +1,29 @@
+<h3> Сданные квартиры: </h3>
+
+<table>
+    <tr>
+        <td> Id </td>
+        <td>  Адрес </td>
+        <td> Этаж </td>
+        <td> Номер </td>
+        <td> Площадь </td>
+        <td> Стоимость </td>
+        <td> Сьемщик </td>
+        <td> Доход </td>
+    </tr>
+    {% for arenda in sold_flats %}
+        <tr>
+            <td>{{ arenda.message.getId() }}</td>
+            <td>{{ arenda.message.getAddress() }}</td>
+            <td>{{ arenda.message.getFloor() }}</td>
+            <td>{{ arenda.message.getNumber() }}</td>
+            <td>{{ arenda.message.getSquare() }}</td>
+            <td>{{ arenda.message.getPrice() }} </td>
+            <td>{{ arenda.people.getUsername() }} {{  arenda.people.getSurname() }} </td>
+            <td>{{ arenda.getFinish().diff(arenda.getStart()).format('%m')*arenda.message.getPrice() }} </td>
+        </tr>
+    {% endfor %}
+</table>
+
+
+<a href="/"> Вернуться на главную </a>
